@@ -32,7 +32,7 @@ const questions = [
 
 import { fieldsMapper } from '../components/fields/mapper';
 import Toast from '../components/Toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 export default function Form() {
@@ -41,9 +41,22 @@ export default function Form() {
         initialData[q.id] = q.type === 'multi_choice' ? [] : '';
     })
 
-    const [formData, setFormData] = useState(initialData);
+    const [formData, setFormData] = useState(() => {
+        let saved = localStorage.getItem("formData");
+        if(!saved) {
+            return initialData;
+        }
+
+        saved = JSON.parse(saved);
+        return { ...initialData, ...saved }
+
+    });
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem("formData", JSON.stringify(formData));
+    }, [formData]);
 
 
 
