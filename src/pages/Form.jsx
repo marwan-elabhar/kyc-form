@@ -19,7 +19,7 @@ const questions = [
         "options": ["Reading", "Traveling", "Sports", "Gaming"],
         "min": 1,
         "max": 3,
-        required: false
+        required: true
     },
     {
         "id": "country",
@@ -89,7 +89,7 @@ export default function Form() {
 
     const validateMultiChoice = ({ value, question }) => {
         if (question.min && value.length < question.min) {
-            return `Please select at least ${question.min} options.`;
+            return `Please select at least ${question.min} ${question.min === 1 ? 'option' : 'options'}.`;
         }
         if (question.max && value.length > question.max) {
             return `Please select no more than ${question.max} options.`;
