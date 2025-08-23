@@ -115,6 +115,8 @@ export default function Form() {
 
         if (Object.keys(newErrors).length === 0) {
             setShowSuccess(true)
+            setFormData(initialData)
+            localStorage.removeItem("formData");
         }
 
     }
