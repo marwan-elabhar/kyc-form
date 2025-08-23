@@ -9,7 +9,8 @@ const questions = [
         "id": "gender",
         "label": "Gender",
         "type": "radio_buttons",
-        "options": ["Male", "Female"]
+        "options": ["Male", "Female"],
+        "required": true
     },
     {
         "id": "hobbies",
@@ -42,45 +43,73 @@ export default function Form() {
 
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Data Submitted:', formData);
-    }
-
     const handleOnChange = ({ value, question }) => {
+        // Clear error on change
         setErrors(prev => {
             const { [question.id]: _, ...rest } = prev;
             return rest;
         });
         setFormData(prev => ({ ...prev, [question.id]: value }))
-        validate({ value, question })
-
-    }
-
-    const validate = ({ value, question }) => {
-        if (question.type === 'multi_choice') {
-            if (question.required && value.length < (question.min || 1)) {
-                setErrors(prev => ({ ...prev, [question.id]: `Please select at least ${question.min || 1} options.` }))
-                return false;
-            }
-            if (question.max && value.length > question.max) {
-                setErrors(prev => ({ ...prev, [question.id]: `Please select no more than ${question.max} options.` }))
-                return false;
-            }
-        } else {
-            if (question.required && !value) {
-                setErrors(prev => ({ ...prev, [question.id]: 'This field is required.' }))
-                return false;
-            }
+        const error = validateField({ value, question })
+        if (error) {
+            setErrors(prev => ({ ...prev, [question.id]: error }))
         }
-        return true;
+
     }
+
+    const validateField = ({ value, question }) => {
+        if (question.type === 'multi_choice') {
+            validateMultiChoice({ value, question })
+            return;
+        }
+
+
+        if (question.required && (!value || value.trim() === '')) {
+            return 'This field is required.';
+        }
+
+        return '';
+    }
+
+    const validateMultiChoice = ({ value, question }) => {
+        if (question.min && value.length < question.min) {
+            return `Please select at least ${question.min} options.`;
+        }
+        if (question.max && value.length > question.max) {
+            return `Please select no more than ${question.max} options.`;
+        }
+        return '';
+    }
+
+    const validateAllFields = () => {
+        const newErrors = {};
+        questions.forEach(question => {
+            const error = validateField({ value: formData[question.id], question });
+            if (error) {
+                newErrors[question.id] = error;
+            }
+        });
+        return newErrors;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const newErrors = validateAllFields();
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            console.log('Form submitted successfully:', formData);
+            alert('Form submitted successfully!');
+        }
+
+    }
+
 
 
     return (
         <div className="form-container">
             <h1>Form Page</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
                 {questions.map((question) => {
                     const { id, label, type, options, required, min, max } = question
                     const FieldComponent = fieldsMapper[type];
