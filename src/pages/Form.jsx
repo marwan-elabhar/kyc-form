@@ -27,6 +27,12 @@ const questions = [
         "type": "drop_down",
         "options": ["Egypt", "USA", "Germany", "Other"],
         required: true
+    },
+    {
+        "id": "bio",
+        "label": "Short Bio",
+        "type": "text_area",
+        "required": false
     }
 ]
 
