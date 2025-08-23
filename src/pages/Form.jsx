@@ -139,7 +139,7 @@ export default function Form() {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
             <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-                    Let us know more about you
+                    Let us know about you
                 </h1>
                 <form onSubmit={handleSubmit} noValidate>
                     {questions.map((question) => {
