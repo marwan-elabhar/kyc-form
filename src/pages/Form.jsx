@@ -12,6 +12,12 @@ const questions = [
         "options": ["Male", "Female"],
         "required": true
     },
+     {
+        "id": "date_of_birth",
+        "label": "Date of Birth",
+        "type": "date_picker",
+        "required": true
+    },
     {
         "id": "hobbies",
         "label": "Hobbies",
@@ -140,7 +146,7 @@ export default function Form() {
                         const { id, label, type, options, required, min, max } = question
                         const FieldComponent = fieldsMapper[type];
                         if (!FieldComponent) {
-                            return <div key={id}>Unsupported field type: {type}</div>;
+                            return <div className='text-red-500' key={id}>Unsupported field type: {type}</div>;
                         }
                         return (
                             <FieldComponent
