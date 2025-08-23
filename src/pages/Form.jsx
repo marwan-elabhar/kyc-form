@@ -19,16 +19,19 @@ const questions = [
         "options": ["Reading", "Traveling", "Sports", "Gaming"],
         "min": 1,
         "max": 3,
+        required: false
     },
     {
         "id": "country",
         "label": "Country of Residence",
         "type": "drop_down",
-        "options": ["Egypt", "USA", "Germany", "Other"]
+        "options": ["Egypt", "USA", "Germany", "Other"],
+        required: true
     }
 ]
 
 import { fieldsMapper } from '../components/fields/mapper';
+import Toast from '../components/Toast';
 import { useState } from 'react';
 
 
@@ -40,6 +43,7 @@ export default function Form() {
 
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});
+    const [showSuccess, setShowSuccess] = useState(false);
 
 
 
@@ -98,8 +102,7 @@ export default function Form() {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            console.log('Form submitted successfully:', formData);
-            alert('Form submitted successfully!');
+            setShowSuccess(true)
         }
 
     }
@@ -130,7 +133,16 @@ export default function Form() {
                         />
                     );
                 })}
-                <button type="submit">Submit</button>
+                <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">Submit</button>
+
+                {showSuccess && (
+                    <Toast
+                        message="Form submitted successfully!"
+                        type="success"
+                        isVisible={showSuccess}
+                        onClose={() => setShowSuccess(false)}
+                    />
+                )}
             </form>
         </div>
     )
