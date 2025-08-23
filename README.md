@@ -1,76 +1,85 @@
 # React + Vite Form Project
 
-This is a small test project built with [React](https://react.dev/) and [Vite](https://vitejs.dev/).  
-It includes a form with validation, local storage support, dark mode toggle, and Tailwind CSS for styling.  
-Deployed on [Netlify](https://www.netlify.com/).
+This is a small test project built with React and Vite.
+It includes a form with validation, local storage support, a dark/light theme toggle, and Tailwind CSS styling.
+Deployed on Netlify.
 
----
+## Tech Stack
+- React – UI framework
+- Vite – Fast build tool
+- Tailwind CSS – Styling
+- Netlify – Deployment
 
-## 🚀 Tech Stack
-- [React](https://react.dev/) – UI framework
-- [Vite](https://vitejs.dev/) – Fast build tool
-- [Tailwind CSS](https://tailwindcss.com/) – Styling
-- [Netlify](https://www.netlify.com/) – Deployment
+## Installation
 
----
-
-## 📦 Installation
-
-Clone the repository:
+Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-
-
----
-
-## ▶️ Run the App
-
-```bash
+git clone https://github.com/marwan-elabhar/kyc-form.git
+cd kyc-form
 npm install
+```
+
+## Run the App
+
+```bash
 npm run dev
+```
 
-## 💡 Thought Process
+The app will be available at the URL printed in your terminal (typically http://localhost:5173).
 
-When tackling this task, my aim was to create a simple, readable and elegant project.
+## Build for Production
 
-**Folder Structure:**
-- I created a fields folder inside the components folder, where I added all inputs components. This way, these inputs will be reusable.
-- I added an ErrorMessage component, in order to ensure UI consistency instead of adding the error message inside each input.
-- I added the Header and Toast component inside the components folder
+```bash
+npm run build
+```
 
-- Inside the pages folder, I added the Form component
+Preview the production build locally:
 
+```bash
+npm run preview
+```
 
-**Implementation overview:**
+## Thought Process
 
-First, I thought about the form logic, how I will render the inputs dynamically depending on the JSON, which is through a simple mapper
-that maps the input type to its component.
+My goal was to keep the project simple, readable, and extensible:
 
-Second, I started thinking about the state management and the form validation for each input on change. I defined the initial state of the form.
+### Folder Structure Decisions
+- Created a `fields/` folder inside `components/` for all input components so they are reusable and consistent.
+- Added an `ErrorMessage` component to centralize error UI rather than repeating markup in each input.
+- Kept `Header` (theme toggle) and `Toast` (notifications) inside `components/` as global UI pieces.
+- Placed the main page and form logic in `pages/Form.jsx` to keep the app straightforward for this small test.
 
-Third, I thought about the validation on form submit and the success message which will appear after submission.
+### Implementation Overview
+1. Dynamic fields: used a mapper to render inputs based on JSON config (type → component).
+2. State & validation: managed with React hooks; on-change validation and a submit-time check.
+3. Feedback: success toast on submit; errors shown inline via `ErrorMessage`.
+4. Persistence: stored form data in `localStorage` to preserve progress on refresh.
+5. Theming: Tailwind `dark` mode via a header toggle that adds/removes the `dark` class on `<html>`.
 
-I considered implementing the form logic in a hook, but for the sake of simplicity I decided against that.
+## Project Structure
 
-I saved the form data in localStorage to persist the values.
-
-
-**Project Structure**
-
-components/
+```plaintext
+src/
+  components/
     fields/
-            TextFieldInput
-            DropdownInput
-            DatePickerInput
-            CheckBoxInput
-            RadioButtonInput    
-     ErrorMessage
-     Header
-     Toast
+      TextFieldInput.jsx
+      DropdownInput.jsx
+      DatePickerInput.jsx
+      CheckBoxInput.jsx
+      RadioButtonInput.jsx
+    ErrorMessage.jsx
+    Header.jsx
+    Toast.jsx
+  pages/
+    Form.jsx
+  App.jsx
+  main.jsx
+  index.css
+```
 
-pages/
-    Form     
+## Tailwind & Dark Mode
 
-
+- Tailwind configured with `darkMode: "class"` in `tailwind.config.js`.
+- The header toggle writes the theme to `localStorage` and toggles the `dark` class on `document.documentElement`.
+- Inputs/buttons use `dark:` variants for background, text, borders, and focus rings.
