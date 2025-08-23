@@ -1,4 +1,5 @@
-export default function RadioInput ({ label, options, value, onChange }) {
+import ErrorMessage from "../ErrorMessage";
+export default function RadioInput ({ label, options, value, onChange, error }) {
     return (
         <div className="form-group">
             <label>{label}</label>
@@ -15,6 +16,7 @@ export default function RadioInput ({ label, options, value, onChange }) {
                     <label htmlFor={option}>{option}</label>
                 </div>
             ))}
+            {error && <ErrorMessage message={error} />}
         </div>
     );
 }

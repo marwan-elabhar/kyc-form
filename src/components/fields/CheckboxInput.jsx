@@ -1,6 +1,7 @@
-export default function CheckboxInput({ label, options, value, onChange }) {
+import ErrorMessage from "../ErrorMessage";
+export default function CheckboxInput({ label, options, value, error, onChange }) {
     const handleCheckboxChange = (option) => {
-        if (value.includes(option)) {
+        if (value && value.includes(option)) {
             onChange(value.filter((item) => item !== option));
         } else {
             onChange([...value, option]);
@@ -23,6 +24,7 @@ export default function CheckboxInput({ label, options, value, onChange }) {
                     <label htmlFor={option}>{option}</label>
                 </div>
             ))}
+            {error && <ErrorMessage message={error} />}
         </div>
     );
 }

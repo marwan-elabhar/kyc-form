@@ -9,7 +9,7 @@ const questions = [
         "id": "gender",
         "label": "Gender",
         "type": "radio_buttons",
-        "options": ["Male", "Female", "Other"]
+        "options": ["Male", "Female"]
     },
     {
         "id": "hobbies",
@@ -28,24 +28,52 @@ const questions = [
 ]
 
 import { fieldsMapper } from '../components/fields/mapper';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 
 export default function Form() {
-    const [formData, setFormData] = useState({});
+    const initialData = {};
+    questions.forEach(q => {
+        initialData[q.id] = q.type === 'multi_choice' ? [] : '';
+    })
 
-    useEffect(() => {
-        const initialData = {};
-        questions.forEach(q => {
-            initialData[q.id] = q.type === 'multi_choice' ? [] : '';
-        })
-        setFormData(initialData);
+    const [formData, setFormData] = useState(initialData);
+    const [errors, setErrors] = useState({});
 
-    }, []);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form Data Submitted:', formData);
+    }
+
+    const handleOnChange = ({ value, question }) => {
+        setErrors(prev => {
+            const { [question.id]: _, ...rest } = prev;
+            return rest;
+        });
+        setFormData(prev => ({ ...prev, [question.id]: value }))
+        validate({ value, question })
+
+    }
+
+    const validate = ({ value, question }) => {
+        if (question.type === 'multi_choice') {
+            if (question.required && value.length < (question.min || 1)) {
+                setErrors(prev => ({ ...prev, [question.id]: `Please select at least ${question.min || 1} options.` }))
+                return false;
+            }
+            if (question.max && value.length > question.max) {
+                setErrors(prev => ({ ...prev, [question.id]: `Please select no more than ${question.max} options.` }))
+                return false;
+            }
+        } else {
+            if (question.required && !value) {
+                setErrors(prev => ({ ...prev, [question.id]: 'This field is required.' }))
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -68,7 +96,8 @@ export default function Form() {
                             min={min}
                             max={max}
                             value={formData[id]}
-                            onChange={(value) => setFormData({ ...formData, [id]: value })}
+                            error={errors[id]}
+                            onChange={(value) => handleOnChange({ value, question })}
                         />
                     );
                 })}

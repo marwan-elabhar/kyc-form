@@ -1,4 +1,5 @@
-export default function DropdownInput({ label, options, value, onChange }) {
+import ErrorMessage from "../ErrorMessage";
+export default function DropdownInput({ label, options, value, onChange, error }) {
     return (
         <div className="form-group">
             <label>{label}</label>
@@ -10,6 +11,7 @@ export default function DropdownInput({ label, options, value, onChange }) {
                     </option>
                 ))}
             </select>
+            {error && <ErrorMessage message={error} />}
         </div>
     );
 }
