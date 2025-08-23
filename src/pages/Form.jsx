@@ -63,8 +63,7 @@ export default function Form() {
 
     const validateField = ({ value, question }) => {
         if (question.type === 'multi_choice') {
-            validateMultiChoice({ value, question })
-            return;
+            return validateMultiChoice({ value, question })
         }
 
 
@@ -110,40 +109,47 @@ export default function Form() {
 
 
     return (
-        <div className="form-container">
-            <h1>Form Page</h1>
-            <form onSubmit={handleSubmit} noValidate>
-                {questions.map((question) => {
-                    const { id, label, type, options, required, min, max } = question
-                    const FieldComponent = fieldsMapper[type];
-                    if (!FieldComponent) {
-                        return <div key={id}>Unsupported field type: {type}</div>;
-                    }
-                    return (
-                        <FieldComponent
-                            key={id}
-                            label={label}
-                            required={required}
-                            options={options}
-                            min={min}
-                            max={max}
-                            value={formData[id]}
-                            error={errors[id]}
-                            onChange={(value) => handleOnChange({ value, question })}
-                        />
-                    );
-                })}
-                <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">Submit</button>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
+            <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+                    Let us know more about you
+                </h1>
+                <form onSubmit={handleSubmit} noValidate>
+                    {questions.map((question) => {
+                        const { id, label, type, options, required, min, max } = question
+                        const FieldComponent = fieldsMapper[type];
+                        if (!FieldComponent) {
+                            return <div key={id}>Unsupported field type: {type}</div>;
+                        }
+                        return (
+                            <FieldComponent
+                                key={id}
+                                label={label}
+                                required={required}
+                                options={options}
+                                min={min}
+                                max={max}
+                                value={formData[id]}
+                                error={errors[id]}
+                                onChange={(value) => handleOnChange({ value, question })}
+                            />
+                        );
+                    })}
+                    <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 
+             rounded-lg transition-colors
+             dark:bg-blue-500 dark:hover:bg-blue-600"
+                    >Submit</button>
 
-                {showSuccess && (
-                    <Toast
-                        message="Form submitted successfully!"
-                        type="success"
-                        isVisible={showSuccess}
-                        onClose={() => setShowSuccess(false)}
-                    />
-                )}
-            </form>
+                    {showSuccess && (
+                        <Toast
+                            message="Form submitted successfully!"
+                            type="success"
+                            isVisible={showSuccess}
+                            onClose={() => setShowSuccess(false)}
+                        />
+                    )}
+                </form>
+            </div>
         </div>
     )
 }

@@ -2,8 +2,9 @@ export default function Toast({ message, type = 'success', onClose, isVisible })
   if (!isVisible) return null;
 
   const styles = {
-    success: 'bg-green-500 border-green-600',
-    error: 'bg-red-500 border-red-600',
+    success:
+      "bg-green-500 border-green-600 dark:bg-green-600 dark:border-green-700",
+    error: "bg-red-500 border-red-600 dark:bg-red-600 dark:border-red-700",
   };
 
   return (
@@ -16,7 +17,7 @@ export default function Toast({ message, type = 'success', onClose, isVisible })
         <span className="flex-1">{message}</span>
         <button
           onClick={onClose}
-          className="text-white hover:text-gray-200 text-lg font-bold"
+          className="ml-2 text-white hover:text-gray-200 dark:hover:text-gray-300 text-lg font-bold focus:outline-none"
         >
           ×
         </button>
